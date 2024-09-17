@@ -1,5 +1,6 @@
 import React, { useState, useRef } from "react";
 import * as ort from "onnxruntime-web";
+import CustomizeButton from "./components/CustomizeButton/CustomzieButton";
 //public/
 const MODEL_PATH = "/best.onnx";
 const TEST_IMAGE = "/100.jpg";
@@ -42,8 +43,8 @@ const ModelInference = () => {
     const end = Date.now();
 
     setInferenceTime(end - start);
-      setOutput(outputData[session.outputNames[0]]);
-      alert(JSON.stringify(output, null, 4));
+    setOutput(outputData[session.outputNames[0]]);
+    alert(JSON.stringify(output, null, 4));
   };
 
   const createModelCpu = async (url) => {
@@ -54,31 +55,53 @@ const ModelInference = () => {
   };
 
   return (
-    <div className="h-[100vh] w-full">
-      <div className="h-1/4">
+    <div className="h-[100vh] w-full flex flex-col items-center">
+      <div className="h-1/4 w-full">
+        <div id="output_txt">
+          {output && (
+            <>
+              <pre className="hidden">{JSON.stringify(output, null, 4)}</pre>
+              <p className="text-white ">Inference time: {inferenceTime} ms</p>
+            </>
+          )}
+        </div>
         <div className="flex justify-end w-full py-5 px-2">
-          <span className="text-white">
-            Camera info: Camera Dell Laptop 2.0.
-          </span>
+          <div className="w-1/4">
+            <span className="text-white">
+              Camera info: Camera Dell Laptop 2.0.
+            </span>
+          </div>
         </div>
         <div className="flex sm:flex-row flex-col justify-between w-full sm:py-5 sm:px-2">
-          <select className="w-[200px] rounded-md focus:outline-none">
-            <option value="" key="">
-              Test value
-            </option>
-          </select>
+          <div className="w-1/4">
+            <select className="w-[200px] rounded-md focus:outline-none">
+              <option value="" key="">
+                Test value
+              </option>
+            </select>
+          </div>
           <div className="flex justify-center">
             <span className="text-4xl font-bold text-white">Kensa Momiji</span>
           </div>
-          <div className="flex flex-row space-x-2">
-            <button onClick={() => detect("circle_img")}>Detect</button>
-            <button onClick={() => detect("circle_img")}>Detect</button>
+          <div className="flex flex-row space-x-10 w-1/4">
+            <div className="w-[200px]">
+              <CustomizeButton
+                title={"写真を撮る"}
+                onClick={() => detect("circle_img")}
+              />
+            </div>
+            <div className="w-[200px]">
+              <CustomizeButton
+                title={"カメラを起動します"}
+                onClick={() => detect("circle_img")}
+              />
+            </div>
           </div>
         </div>
       </div>
-      <div className="relative w-full h-3/4  sm:-mt-10  py-10 ">
-        <div className="h-full overflow-y-auto flex sm:flex-row sm:space-x-2 px-5 sm:px-0 sm:space-y-0 space-y-2 flex-col items-center justify-center ">
-          <div className="sm:w-1/2 w-full h-full sm:mt-0 mt-[60%]">
+      <div className="relative w-full h-3/4  sm:-mt-10  py-10 bg-[#D9D9D9] bg-opacity-50 sm:w-[95%] rounded-md">
+        <div className=" z-30 h-full overflow-y-auto flex sm:flex-row sm:space-x-2 px-5 sm:px-0 sm:space-y-0 space-y-2 flex-col items-center justify-center ">
+          <div className="sm:w-1/2 w-full h-full sm:mt-0 mt-[60%] sm:pl-10">
             <img
               ref={imageRef}
               id="circle_img"
@@ -87,7 +110,7 @@ const ModelInference = () => {
               className="object-contain h-full w-full rounded-lg"
             />
           </div>
-          <div className="sm:w-1/2 w-full h-full ">
+          <div className="sm:w-1/2 w-full h-full sm:pr-10">
             <canvas
               ref={resizedCanvasRef}
               id="resized_ctx"
@@ -97,16 +120,6 @@ const ModelInference = () => {
             ></canvas>
           </div>
         </div>
-        {/* <div className="bg-[#D9D9D9] sm:w-[95%] w-full h-full absolute top-0 left-1/2 -translate-x-1/2 opacity-50 z-10 rounded-md"></div> */}
-      </div>
-
-      <div id="output_txt">
-        {output && (
-          <>
-            <pre className="hidden">{JSON.stringify(output, null, 4)}</pre>
-            <p className="text-white ">Inference time: {inferenceTime} ms</p>
-          </>
-        )}
       </div>
     </div>
   );
