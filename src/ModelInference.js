@@ -42,7 +42,8 @@ const ModelInference = () => {
     const end = Date.now();
 
     setInferenceTime(end - start);
-    setOutput(outputData[session.outputNames[0]]);
+      setOutput(outputData[session.outputNames[0]]);
+      alert(JSON.stringify(output, null, 4));
   };
 
   const createModelCpu = async (url) => {
@@ -75,8 +76,9 @@ const ModelInference = () => {
           </div>
         </div>
       </div>
-        <div className="flex sm:flex-row sm:space-x-2 px-5 sm:px-0 sm:space-y-0 space-y-2 flex-col items-center justify-center relative w-full sm:h-3/4 h-full sm:-mt-10  py-10 ">
-          <div className="sm:w-1/2 w-full h-full ">
+      <div className="relative w-full h-3/4  sm:-mt-10  py-10 ">
+        <div className="h-full overflow-y-auto flex sm:flex-row sm:space-x-2 px-5 sm:px-0 sm:space-y-0 space-y-2 flex-col items-center justify-center ">
+          <div className="sm:w-1/2 w-full h-full sm:mt-0 mt-[60%]">
             <img
               ref={imageRef}
               id="circle_img"
@@ -94,17 +96,18 @@ const ModelInference = () => {
               className="object-contain h-full w-full"
             ></canvas>
           </div>
-          {/* <div className="bg-[#D9D9D9] sm:w-[95%] w-full h-full absolute top-0 left-1/2 -translate-x-1/2 opacity-50 z-10 rounded-md"></div> */}
         </div>
+        {/* <div className="bg-[#D9D9D9] sm:w-[95%] w-full h-full absolute top-0 left-1/2 -translate-x-1/2 opacity-50 z-10 rounded-md"></div> */}
+      </div>
 
-      {/* <div id="output_txt">
+      <div id="output_txt">
         {output && (
           <>
-            <pre>{JSON.stringify(output, null, 4)}</pre>
-            <p>Inference time: {inferenceTime} ms</p>
+            <pre className="hidden">{JSON.stringify(output, null, 4)}</pre>
+            <p className="text-white ">Inference time: {inferenceTime} ms</p>
           </>
         )}
-      </div> */}
+      </div>
     </div>
   );
 };
